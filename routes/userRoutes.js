@@ -134,6 +134,8 @@ router.post("/login", async (req, res) => {
       httpOnly: true, // The cookie only accessible by the web server
       secure: true, // The cookie will only be sent with an encrypted request over the HTTPS protocol
       sameSite: "None",
+      path: "/",
+      maxAge: 3600000,
     }); // 1 hour expiration
 
     res.status(200).json({ message: "Login successful" });
@@ -200,6 +202,8 @@ router.post("/editUserData", authenticateToken, async (req, res) => {
           httpOnly: true, // The cookie only accessible by the web server
           secure: true, // The cookie will only be sent with an encrypted request over the HTTPS protocol
           sameSite: "None",
+          path: "/",
+          maxAge: 3600000,
         }); // 1 hour expiration
 
         res.status(200).json({
@@ -236,7 +240,12 @@ router.post("/editUserData", authenticateToken, async (req, res) => {
 // Route to handle user logout
 router.post("/logout", removeSession, (req, res) => {
   // Clear the HttpOnly cookie on the client-side
-  res.clearCookie("token");
+  res.clearCookie("token",{
+    httpOnly: true, // The cookie only accessible by the web server
+    secure: true, // The cookie will only be sent with an encrypted request over the HTTPS protocol
+    sameSite: "None",
+    path: "/",
+  });
   res.status(200).json({ message: "Logout successful" });
 });
 
